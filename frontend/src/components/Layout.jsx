@@ -6,6 +6,9 @@ function Layout({ children }) {
                 <h2 className="text-xl font-bold">BLASTCARE</h2>
                 <Link to="/patient/dashboard" className="mt-4 block">Dashboard</Link>
                 <Link to="/patient/appointments" className="mt-2 block">My Appointments</Link>
+                <Link to="/patient/prescriptions" className="mt-2 block">My Prescriptions</Link>
+                <Link to="/patient/book" className="mt-2 block">Book Appointment</Link>
+                <Link to="/patient/bills" className="mt-2 block">My Bills</Link>
             </div>
             <div className="flex-1">
                 <div className="flex items-center justify-between border-b bg-white p-4">

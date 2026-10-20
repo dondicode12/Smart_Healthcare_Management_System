@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+ import { Link } from "react-router-dom";
 function Register() {
     return (
         <div className="flex min-h-screen items-center justify-center bg-blue-100 py-8">
