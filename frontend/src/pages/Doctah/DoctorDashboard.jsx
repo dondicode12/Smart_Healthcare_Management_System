@@ -6,24 +6,24 @@ function DoctorDashboard() {
       <h2 className="mb-6 text-2xl font-bold">Welcome, Dr. Dion Angelo Hipolito</h2>
 
       <div className="mb-6 grid gap-4 md:grid-cols-3">
-        <div className="rounded-lg bg-white p-6 shadow">
+        <div className="rounded-xl bg-white p-6 shadow-sm ring-1 ring-gray-200 transition hover:shadow-md">
           <p className="text-gray-500">Appointments Today</p>
           <p className="text-3xl font-bold text-blue-900">5</p>
         </div>
-        <div className="rounded-lg bg-white p-6 shadow">
+        <div className="rounded-xl bg-white p-6 shadow-sm ring-1 ring-gray-200 transition hover:shadow-md">
           <p className="text-gray-500">Total Patients</p>
           <p className="text-3xl font-bold text-blue-900">48</p>
         </div>
-        <div className="rounded-lg bg-white p-6 shadow">
+        <div className="rounded-xl bg-white p-6 shadow-sm ring-1 ring-gray-200 transition hover:shadow-md">
           <p className="text-gray-500">Pending Prescriptions</p>
           <p className="text-3xl font-bold text-blue-900">2</p>
         </div>
       </div>
 
       <h3 className="mb-3 text-lg font-semibold">Today's Schedule</h3>
-      <div className="overflow-x-auto rounded-lg bg-white shadow">
+      <div className="overflow-x-auto rounded-xl bg-white shadow-sm ring-1 ring-gray-200">
         <table className="w-full text-left">
-          <thead className="bg-gray-100 text-sm text-gray-600">
+          <thead className="bg-gray-50 text-xs uppercase tracking-wide text-gray-500">
             <tr>
               <th className="p-4">Time</th>
               <th className="p-4">Patient</th>

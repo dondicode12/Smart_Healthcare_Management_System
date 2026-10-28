@@ -5,7 +5,7 @@ function Profile() {
     <Layout>
       <h2 className="mb-6 text-2xl font-bold">Profile & Settings</h2>
 
-      <div className="mb-6 max-w-xl rounded-lg bg-white p-8 shadow">
+      <div className="mb-6 max-w-xl rounded-xl bg-white p-8 shadow-sm ring-1 ring-gray-200">
         <h3 className="mb-4 text-lg font-semibold text-blue-900">Personal Information</h3>
         <form>
           <label className="block text-sm font-medium text-gray-700">Full Name</label>
@@ -38,7 +38,7 @@ function Profile() {
         </form>
       </div>
 
-      <div className="max-w-xl rounded-lg bg-white p-8 shadow">
+      <div className="max-w-xl rounded-xl bg-white p-8 shadow-sm ring-1 ring-gray-200">
         <h3 className="mb-4 text-lg font-semibold text-blue-900">Change Password</h3>
         <form>
           <label className="block text-sm font-medium text-gray-700">Current Password</label>

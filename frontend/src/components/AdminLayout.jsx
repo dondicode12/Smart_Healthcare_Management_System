@@ -7,6 +7,10 @@ function AdminLayout({ children }) {
         <h2 className="text-xl font-bold">BLASTCARE</h2>
         <Link to="/admin/dashboard" className="mt-4 block">Dashboard</Link>
         <Link to="/admin/users" className="mt-2 block">Manage Users</Link>
+        <Link to="/admin/doctors" className="mt-2 block">Manage Doctors</Link>
+        <Link to="/admin/patients" className="mt-2 block">Manage Patients</Link>
+        <Link to="/admin/appointments" className="mt-2 block">Manage Appointments</Link>
+        <Link to="/admin/billing" className="mt-2 block">Billing</Link>
       </div>
 
       <div className="flex-1">

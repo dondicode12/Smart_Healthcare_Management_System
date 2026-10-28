@@ -12,9 +12,9 @@ function PatientAppointments() {
         </Link>
       </div>
 
-      <div className="overflow-x-auto rounded-lg bg-white shadow">
+      <div className="overflow-x-auto rounded-xl bg-white shadow-sm ring-1 ring-gray-200">
         <table className="w-full text-left">
-          <thead className="bg-gray-100 text-sm text-gray-600">
+          <thead className="bg-gray-50 text-xs uppercase tracking-wide text-gray-500">
             <tr>
               <th className="p-4">Date</th>
               <th className="p-4">Time</th>

@@ -6,19 +6,19 @@ function PatientBills() {
       <h2 className="mb-6 text-2xl font-bold">My Bills</h2>
 
       <div className="mb-6 grid gap-4 md:grid-cols-2">
-        <div className="rounded-lg bg-white p-6 shadow">
+        <div className="rounded-xl bg-white p-6 shadow-sm ring-1 ring-gray-200 transition hover:shadow-md">
           <p className="text-gray-500">Total Unpaid</p>
           <p className="text-3xl font-bold text-red-600">₱2,500.00</p>
         </div>
-        <div className="rounded-lg bg-white p-6 shadow">
+        <div className="rounded-xl bg-white p-6 shadow-sm ring-1 ring-gray-200 transition hover:shadow-md">
           <p className="text-gray-500">Paid This Year</p>
           <p className="text-3xl font-bold text-green-600">₱8,200.00</p>
         </div>
       </div>
 
-      <div className="overflow-x-auto rounded-lg bg-white shadow">
+      <div className="overflow-x-auto rounded-xl bg-white shadow-sm ring-1 ring-gray-200">
         <table className="w-full text-left">
-          <thead className="bg-gray-100 text-sm text-gray-600">
+          <thead className="bg-gray-50 text-xs uppercase tracking-wide text-gray-500">
             <tr>
               <th className="p-4">Invoice #</th>
               <th className="p-4">Date</th>

@@ -5,7 +5,7 @@ function BookAppointment() {
     <Layout>
       <h2 className="mb-6 text-2xl font-bold">Book an Appointment</h2>
 
-      <div className="max-w-xl rounded-lg bg-white p-8 shadow">
+      <div className="max-w-xl rounded-xl bg-white p-8 shadow-sm ring-1 ring-gray-200">
         <form>
           <label className="block text-sm font-medium text-gray-700">
             Specialty

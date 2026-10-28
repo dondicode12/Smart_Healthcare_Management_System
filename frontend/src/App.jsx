@@ -15,6 +15,10 @@ import AdminUsers from './pages/Adumin/AdminUsers'
 import NotFound from './pages/NotFound'
 import Unauthorized from './pages/Unauthorized'
 import Profile from './pages/Profile'
+import AdminDoctors from './pages/Adumin/AdminDoctors'
+import AdminPatients from './pages/Adumin/AdminPatients'
+import AdminAppointments from './pages/Adumin/AdminAppointments'
+import AdminBilling from './pages/Adumin/AdminBilling'
 
 function App() {
   return (
@@ -35,6 +39,10 @@ function App() {
         <Route path="/admin/users" element={<AdminUsers />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/unauthorized" element={<Unauthorized />} />
+        <Route path="/admin/doctors" element={<AdminDoctors />} />
+        <Route path="/admin/patients" element={<AdminPatients />} />
+        <Route path="/admin/appointments" element={<AdminAppointments />} />
+        <Route path="/admin/billing" element={<AdminBilling />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>

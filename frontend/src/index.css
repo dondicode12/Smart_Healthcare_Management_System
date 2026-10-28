@@ -1,1 +1,17 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: #f3f4f6;
+}
+
+@layer components {
+  tbody tr {
+    border-color: #e5e7eb;
+    transition: background-color 0.15s;
+  }
+  tbody tr:hover {
+    background-color: #eff6ff;
+  }
+} 

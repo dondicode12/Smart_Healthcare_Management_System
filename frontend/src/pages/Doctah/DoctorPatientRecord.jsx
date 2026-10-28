@@ -10,7 +10,7 @@ function DoctorPatientRecord() {
 
       <h2 className="mb-6 mt-2 text-2xl font-bold">Patient Record: Juan Dela Cruz</h2>
 
-      <div className="mb-6 rounded-lg bg-white p-6 shadow">
+      <div className="mb-6 rounded-xl bg-white p-6 shadow-sm ring-1 ring-gray-200 transition hover:shadow-md">
         <h3 className="mb-3 text-lg font-semibold text-blue-900">Details</h3>
         <div className="grid gap-2 md:grid-cols-2">
           <p><span className="text-gray-500">Age:</span> 34</p>
@@ -20,7 +20,7 @@ function DoctorPatientRecord() {
         </div>
       </div>
 
-      <div className="mb-6 rounded-lg bg-white p-6 shadow">
+      <div className="mb-6 rounded-xl bg-white p-6 shadow-sm ring-1 ring-gray-200 transition hover:shadow-md">
         <h3 className="mb-3 text-lg font-semibold text-blue-900">Visit History</h3>
         <div className="border-t py-3">
           <p className="font-medium">Oct 10, 2026: General check-up</p>

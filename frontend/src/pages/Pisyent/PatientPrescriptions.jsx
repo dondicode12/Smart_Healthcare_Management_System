@@ -5,7 +5,7 @@ function PatientPrescriptions() {
     <Layout>
       <h2 className="mb-6 text-2xl font-bold">My Prescriptions</h2>
       <div className="grid gap-4 md:grid-cols-2">
-        <div className="rounded-lg bg-white p-6 shadow">
+        <div className="rounded-xl bg-white p-6 shadow-sm ring-1 ring-gray-200 transition hover:shadow-md">
           <div className="flex items-center justify-between">
             <h3 className="text-lg font-semibold text-blue-900">Amoxicillin 500mg</h3>
             <span className="rounded-full bg-green-100 px-3 py-1 text-sm text-green-700">
@@ -17,7 +17,7 @@ function PatientPrescriptions() {
           <p className="text-sm text-gray-500">Date: Oct 10, 2026</p>
         </div>
 
-        <div className="rounded-lg bg-white p-6 shadow">
+        <div className="rounded-xl bg-white p-6 shadow-sm ring-1 ring-gray-200 transition hover:shadow-md">
           <div className="flex items-center justify-between">
             <h3 className="text-lg font-semibold text-blue-900">Losartan 50mg</h3>
             <span className="rounded-full bg-green-100 px-3 py-1 text-sm text-green-700">
@@ -29,7 +29,7 @@ function PatientPrescriptions() {
           <p className="text-sm text-gray-500">Date: Oct 5, 2026</p>
         </div>
 
-        <div className="rounded-lg bg-white p-6 shadow">
+        <div className="rounded-xl bg-white p-6 shadow-sm ring-1 ring-gray-200 transition hover:shadow-md">
           <div className="flex items-center justify-between">
             <h3 className="text-lg font-semibold text-blue-900">Cetirizine 10mg</h3>
             <span className="rounded-full bg-gray-200 px-3 py-1 text-sm text-gray-700">
