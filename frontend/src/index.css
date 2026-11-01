@@ -1,17 +1,157 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
 
-body {
-  font-family: 'Inter', sans-serif;
-  background-color: #f3f4f6;
+/* ---------- Brand colors (original blue scheme) ---------- */
+@theme {
+  --font-sans: 'Plus Jakarta Sans', sans-serif;
+  --color-page: #f3f4f6;   /* page background (gray-100) */
+  --color-soft: #dbeafe;   /* soft blue highlight (blue-100) */
+  --color-brand: #1e3a8a;  /* main blue (blue-900) */
+  --color-ink: #111827;    /* body text (gray-900) */
 }
 
+:root {
+  --surface: #ffffff;      /* card / sidebar / top bar background */
+}
+
+/* ---------- Dark mode ----------
+   Adding the "dark" class to <html> swaps these color values.
+   Every page (including pages we did not edit) follows automatically. */
+.dark {
+  color-scheme: dark;
+  --surface: #111a2e;
+  --color-page: #0b1220;
+  --color-soft: #1b2b52;
+  --color-brand: #93c5fd;
+  --color-ink: #e5e7eb;
+
+  --color-gray-50: #172033;
+  --color-gray-100: #1c2740;
+  --color-gray-200: #2a3654;
+  --color-gray-300: #3a4768;
+  --color-gray-400: #6b7a99;
+  --color-gray-500: #94a3b8;
+  --color-gray-600: #b0bccd;
+  --color-gray-700: #cbd5e1;
+  --color-gray-800: #e2e8f0;
+  --color-gray-900: #f1f5f9;
+
+  --color-blue-50: #14234a;
+  --color-blue-700: #60a5fa;
+  --color-blue-800: #3b82f6;
+  --color-blue-900: #2563eb;
+
+  --color-green-50: #10281c;
+  --color-green-100: #123a27;
+  --color-green-600: #4ade80;
+  --color-green-700: #86efac;
+  --color-emerald-50: #0f2a22;
+  --color-emerald-700: #6ee7b7;
+  --color-yellow-50: #2b2410;
+  --color-yellow-100: #3a3014;
+  --color-yellow-600: #facc15;
+  --color-yellow-700: #fde68a;
+  --color-red-50: #2d1618;
+  --color-red-100: #3b1a1d;
+  --color-red-600: #fca5a5;
+  --color-red-700: #fca5a5;
+}
+
+/* White surfaces and a few special cases in dark mode */
+.dark .bg-white { background-color: var(--surface); }
+.dark .bg-white\/80 { background-color: color-mix(in srgb, var(--surface) 80%, transparent); }
+.dark .bg-blue-100 { background-color: #1b2f5e; }
+.dark .from-blue-900 { --tw-gradient-from: #1e3a8a; }
+.dark .to-blue-700 { --tw-gradient-to: #1d4ed8; }
+
+/* ---------- Base: smooth, consistent controls ---------- */
+@layer base {
+  html { scroll-behavior: smooth; }
+
+  body {
+    background-color: var(--color-page);
+    color: var(--color-ink);
+  }
+
+  input, select, textarea {
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+  input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: #1e3a8a;
+    box-shadow: 0 0 0 3px rgb(30 58 138 / 0.15);
+  }
+  .dark input:focus, .dark select:focus, .dark textarea:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgb(59 130 246 / 0.25);
+  }
+
+  button, a {
+    transition-property: color, background-color, border-color, box-shadow, opacity;
+    transition-duration: 0.15s;
+  }
+  button:not(:disabled):active {
+    transform: scale(0.98);
+  }
+}
+
+/* ---------- Reusable pieces ---------- */
 @layer components {
+  .card {
+    @apply rounded-2xl shadow-sm ring-1 ring-gray-200/70;
+    background-color: var(--surface);
+  }
+
   tbody tr {
-    border-color: #e5e7eb;
+    border-color: var(--color-gray-200);
     transition: background-color 0.15s;
   }
   tbody tr:hover {
-    background-color: #eff6ff;
+    background-color: var(--color-blue-50);
   }
-} 
+}
+
+/* ---------- Motion ---------- */
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes draw {
+  to { stroke-dashoffset: 0; }
+}
+
+/* A page fades up when it appears */
+.page-enter { animation: fade-up 0.35s ease-out both; }
+
+/* Children of .stagger appear one after another */
+.stagger > * { animation: fade-up 0.45s ease-out both; }
+.stagger > *:nth-child(1) { animation-delay: 0.02s; }
+.stagger > *:nth-child(2) { animation-delay: 0.07s; }
+.stagger > *:nth-child(3) { animation-delay: 0.12s; }
+.stagger > *:nth-child(4) { animation-delay: 0.17s; }
+.stagger > *:nth-child(5) { animation-delay: 0.22s; }
+.stagger > *:nth-child(6) { animation-delay: 0.27s; }
+
+/* Line that draws itself (charts) */
+.draw-line {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: draw 1.2s ease-out 0.2s forwards;
+}
+
+/* Smooth light/dark switch */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.35s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0s !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .draw-line { stroke-dashoffset: 0; }
+}

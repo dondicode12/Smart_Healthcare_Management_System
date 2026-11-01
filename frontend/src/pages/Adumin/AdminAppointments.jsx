@@ -1,53 +1,49 @@
+import { Plus } from 'lucide-react'
 import AdminLayout from '../../components/AdminLayout'
+import Avatar from '../../components/Avatar'
+import PageHeader from '../../components/PageHeader'
+import RowActions from '../../components/RowActions'
+import StatusChip from '../../components/StatusChip'
+import TableCard from '../../components/TableCard'
+
+// Fake data. Later this comes from the backend.
+const appointments = [
+  { id: 1, patient: 'Don Marco Del Campo', doctor: 'Dr. Maria Santos', date: 'Oct 15, 2026', time: '10:00 AM', status: 'Confirmed' },
+  { id: 2, patient: 'Sean Kyle Quintos', doctor: 'Dr. Jose Reyes', date: 'Oct 16, 2026', time: '2:00 PM', status: 'Pending' },
+]
 
 function AdminAppointments() {
   return (
     <AdminLayout>
-      <div className="mb-6 flex items-center justify-between">
-        <h2 className="text-2xl font-bold">Manage Appointments</h2>
-        <button className="rounded bg-blue-900 px-4 py-2 font-semibold text-white hover:bg-blue-800">
-          Add Appointment
+      <PageHeader title="Manage Appointments" subtitle="Every booking across all doctors">
+        <button className="inline-flex items-center gap-2 rounded-lg bg-blue-900 px-4 py-2 font-semibold text-white hover:bg-blue-800">
+          <Plus size={18} /> Add Appointment
         </button>
-      </div>
+      </PageHeader>
 
-      <div className="overflow-x-auto rounded-xl bg-white shadow-sm ring-1 ring-gray-200">
-        <table className="w-full text-left">
-          <thead className="bg-gray-50 text-xs uppercase tracking-wide text-gray-500">
-            <tr>
-              <th className="p-4">Patient</th>
-              <th className="p-4">Doctor</th>
-              <th className="p-4">Date</th>
-              <th className="p-4">Time</th>
-              <th className="p-4">Status</th>
-              <th className="p-4">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr className="border-t">
-              <td className="p-4">Don Marco Del Campo</td>
-              <td className="p-4">Dr. Maria Santos</td>
-              <td className="p-4">2023-10-15</td>
-              <td className="p-4">10:00 AM</td>
-              <td className="p-4">Confirmed</td>
-              <td className="p-4">
-                <button className="mr-3 text-blue-700 hover:underline">Edit</button>
-                <button className="text-red-600 hover:underline">Delete</button>
-              </td>
-            </tr>
-            <tr className="border-t">
-              <td className="p-4">Sean Kyle Quintos</td>
-              <td className="p-4">Dr. Jose Reyes</td>
-              <td className="p-4">2023-10-16</td>
-              <td className="p-4">2:00 PM</td>
-              <td className="p-4">Pending</td>
-              <td className="p-4">
-                <button className="mr-3 text-blue-700 hover:underline">Edit</button>
-                <button className="text-red-600 hover:underline">Delete</button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+      <TableCard
+        headers={['Patient', 'Doctor', 'Date', 'Time', 'Status', 'Actions']}
+      >
+        {appointments.map((item) => (
+          <tr key={item.id} className="border-t">
+            <td className="p-4">
+              <div className="flex items-center gap-3">
+                <Avatar name={item.patient} />
+                <span className="font-medium">{item.patient}</span>
+              </div>
+            </td>
+            <td className="p-4">{item.doctor}</td>
+            <td className="p-4">{item.date}</td>
+            <td className="p-4">{item.time}</td>
+            <td className="p-4">
+              <StatusChip status={item.status} />
+            </td>
+            <td className="p-4">
+              <RowActions />
+            </td>
+          </tr>
+        ))}
+      </TableCard>
     </AdminLayout>
   )
 }
