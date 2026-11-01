@@ -1,13 +1,75 @@
+
+import { useState } from 'react'
 import Layout from '../../components/Layout'
 import { Link } from 'react-router-dom'
 
 function PatientAppointments() {
+  const [appointments, setAppointments] = useState([
+    {
+      id: 1,
+      date: 'Oct 25, 2026',
+      time: '9:00 AM',
+      doctor: 'Dr. Maria Santos',
+      specialty: 'Cardiology',
+      status: 'Confirmed',
+    },
+    {
+      id: 2,
+      date: 'Oct 28, 2026',
+      time: '2:30 PM',
+      doctor: 'Dr. Jose Reyes',
+      specialty: 'Dermatology',
+      status: 'Pending',
+    },
+    {
+      id: 3,
+      date: 'Oct 10, 2026',
+      time: '11:00 AM',
+      doctor: 'Dr. Ana Cruz',
+      specialty: 'General Medicine',
+      status: 'Completed',
+    },
+  ])
+
+  const handleCancel = (id) => {
+    const confirmed = window.confirm(
+      'Are you sure you want to cancel this appointment?'
+    )
+
+    if (!confirmed) return
+
+    setAppointments((previousAppointments) =>
+      previousAppointments.map((appointment) =>
+        appointment.id === id
+          ? { ...appointment, status: 'Cancelled' }
+          : appointment
+      )
+    )
+  }
+
+  const getStatusStyle = (status) => {
+    switch (status) {
+      case 'Confirmed':
+        return 'bg-green-100 text-green-700'
+      case 'Pending':
+        return 'bg-yellow-100 text-yellow-700'
+      case 'Completed':
+        return 'bg-gray-200 text-gray-700'
+      case 'Cancelled':
+        return 'bg-red-100 text-red-700'
+      default:
+        return 'bg-gray-100 text-gray-700'
+    }
+  }
+
   return (
     <Layout>
       <div className="mb-6 flex items-center justify-between">
         <h2 className="text-2xl font-bold">My Appointments</h2>
-        <Link to="/patient/book"
-          className="rounded bg-blue-900 px-4 py-2 font-semibold text-white hover:bg-blue-800">
+        <Link
+          to="/patient/book"
+          className="rounded bg-blue-900 px-4 py-2 font-semibold text-white hover:bg-blue-800"
+        >
           Book Appointment
         </Link>
       </div>
@@ -24,51 +86,41 @@ function PatientAppointments() {
               <th className="p-4">Action</th>
             </tr>
           </thead>
+
           <tbody>
-            <tr className="border-t">
-              <td className="p-4">Oct 25, 2026</td>
-              <td className="p-4">9:00 AM</td>
-              <td className="p-4">Dr. Maria Santos</td>
-              <td className="p-4">Cardiology</td>
-              <td className="p-4">
-                <span className="rounded-full bg-green-100 px-3 py-1 text-sm text-green-700">
-                  Confirmed
-                </span>
-              </td>
-              <td className="p-4">
-                <button className="text-red-600 hover:underline">Cancel</button>
-              </td>
-            </tr>
+            {appointments.map((appointment) => (
+              <tr key={appointment.id} className="border-t">
+                <td className="p-4">{appointment.date}</td>
+                <td className="p-4">{appointment.time}</td>
+                <td className="p-4">{appointment.doctor}</td>
+                <td className="p-4">{appointment.specialty}</td>
 
-            <tr className="border-t">
-              <td className="p-4">Oct 28, 2026</td>
-              <td className="p-4">2:30 PM</td>
-              <td className="p-4">Dr. Jose Reyes</td>
-              <td className="p-4">Dermatology</td>
-              <td className="p-4">
-                <span className="rounded-full bg-yellow-100 px-3 py-1 text-sm text-yellow-700">
-                  Pending
-                </span>
-              </td>
-              <td className="p-4">
-                <button className="text-red-600 hover:underline">Cancel</button>
-              </td>
-            </tr>
+                <td className="p-4">
+                  <span
+                    className={`rounded-full px-3 py-1 text-sm ${getStatusStyle(
+                      appointment.status
+                    )}`}
+                  >
+                    {appointment.status}
+                  </span>
+                </td>
 
-            <tr className="border-t">
-              <td className="p-4">Oct 10, 2026</td>
-              <td className="p-4">11:00 AM</td>
-              <td className="p-4">Dr. Ana Cruz</td>
-              <td className="p-4">General Medicine</td>
-              <td className="p-4">
-                <span className="rounded-full bg-gray-200 px-3 py-1 text-sm text-gray-700">
-                  Completed
-                </span>
-              </td>
-              <td className="p-4">
-                <span className="text-gray-400">-</span>
-              </td>
-            </tr>
+                <td className="p-4">
+                  {appointment.status !== 'Completed' &&
+                  appointment.status !== 'Cancelled' ? (
+                    <button
+                      type="button"
+                      onClick={() => handleCancel(appointment.id)}
+                      className="text-red-600 hover:underline"
+                    >
+                      Cancel
+                    </button>
+                  ) : (
+                    <span className="text-gray-400">-</span>
+                  )}
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>
