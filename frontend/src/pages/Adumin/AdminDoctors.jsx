@@ -1,50 +1,43 @@
+import { Plus } from 'lucide-react'
 import AdminLayout from '../../components/AdminLayout'
+import Avatar from '../../components/Avatar'
+import PageHeader from '../../components/PageHeader'
+import RowActions from '../../components/RowActions'
+import TableCard from '../../components/TableCard'
+
+// Fake data. Later this comes from the backend.
+const doctors = [
+  { id: 1, name: 'Dr. Maria Santos', specialty: 'Cardiology', email: 'maria@blastcare.com', availability: 'Mon-Fri' },
+  { id: 2, name: 'Dr. Jose Reyes', specialty: 'Dermatology', email: 'jose@blastcare.com', availability: 'Tue, Thu, Sat' },
+]
 
 function AdminDoctors() {
   return (
     <AdminLayout>
-      <div className="mb-6 flex items-center justify-between">
-        <h2 className="text-2xl font-bold">Manage Doctors</h2>
-        <button className="rounded bg-blue-900 px-4 py-2 font-semibold text-white hover:bg-blue-800">
-          Add Doctor
+      <PageHeader title="Manage Doctors" subtitle="Doctors and their availability">
+        <button className="inline-flex items-center gap-2 rounded-lg bg-blue-900 px-4 py-2 font-semibold text-white hover:bg-blue-800">
+          <Plus size={18} /> Add Doctor
         </button>
-      </div>
+      </PageHeader>
 
-      <div className="overflow-x-auto rounded-xl bg-white shadow-sm ring-1 ring-gray-200">
-        <table className="w-full text-left">
-          <thead className="bg-gray-50 text-xs uppercase tracking-wide text-gray-500">
-            <tr>
-              <th className="p-4">Name</th>
-              <th className="p-4">Specialty</th>
-              <th className="p-4">Email</th>
-              <th className="p-4">Availability</th>
-              <th className="p-4">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr className="border-t">
-              <td className="p-4">Dr. Maria Santos</td>
-              <td className="p-4">Cardiology</td>
-              <td className="p-4">maria@blastcare.com</td>
-              <td className="p-4">Mon-Fri</td>
-              <td className="p-4">
-                <button className="mr-3 text-blue-700 hover:underline">Edit</button>
-                <button className="text-red-600 hover:underline">Delete</button>
-              </td>
-            </tr>
-            <tr className="border-t">
-              <td className="p-4">Dr. Jose Reyes</td>
-              <td className="p-4">Dermatology</td>
-              <td className="p-4">jose@blastcare.com</td>
-              <td className="p-4">Tue, Thu, Sat</td>
-              <td className="p-4">
-                <button className="mr-3 text-blue-700 hover:underline">Edit</button>
-                <button className="text-red-600 hover:underline">Delete</button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+      <TableCard headers={['Name', 'Specialty', 'Email', 'Availability', 'Actions']}>
+        {doctors.map((doctor) => (
+          <tr key={doctor.id} className="border-t">
+            <td className="p-4">
+              <div className="flex items-center gap-3">
+                <Avatar name={doctor.name} />
+                <span className="font-medium">{doctor.name}</span>
+              </div>
+            </td>
+            <td className="p-4">{doctor.specialty}</td>
+            <td className="p-4">{doctor.email}</td>
+            <td className="p-4">{doctor.availability}</td>
+            <td className="p-4">
+              <RowActions />
+            </td>
+          </tr>
+        ))}
+      </TableCard>
     </AdminLayout>
   )
 }

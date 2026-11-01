@@ -19,6 +19,7 @@ import AdminDoctors from './pages/Adumin/AdminDoctors'
 import AdminPatients from './pages/Adumin/AdminPatients'
 import AdminAppointments from './pages/Adumin/AdminAppointments'
 import AdminBilling from './pages/Adumin/AdminBilling'
+import AdminReports from './pages/Adumin/AdminReports'
 
 function App() {
   return (
@@ -43,6 +44,7 @@ function App() {
         <Route path="/admin/patients" element={<AdminPatients />} />
         <Route path="/admin/appointments" element={<AdminAppointments />} />
         <Route path="/admin/billing" element={<AdminBilling />} />
+        <Route path="/admin/reports" element={<AdminReports />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>

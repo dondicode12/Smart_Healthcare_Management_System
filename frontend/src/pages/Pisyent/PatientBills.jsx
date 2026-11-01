@@ -1,83 +1,71 @@
+import { CircleCheck, Wallet } from 'lucide-react'
 import Layout from '../../components/Layout'
+import PageHeader from '../../components/PageHeader'
+import StatTile from '../../components/StatTile'
+import StatusChip from '../../components/StatusChip'
+import TableCard from '../../components/TableCard'
+
+// Fake data. Later this comes from the backend.
+const bills = [
+  {
+    id: 'INV-0003',
+    date: 'Oct 25, 2026',
+    description: 'Cardiology consultation',
+    amount: '₱2,500.00',
+    status: 'Unpaid',
+  },
+  {
+    id: 'INV-0002',
+    date: 'Oct 10, 2026',
+    description: 'General check-up',
+    amount: '₱1,200.00',
+    status: 'Paid',
+  },
+  {
+    id: 'INV-0001',
+    date: 'Sep 20, 2026',
+    description: 'Dermatology consultation',
+    amount: '₱1,800.00',
+    status: 'Paid',
+  },
+]
 
 function PatientBills() {
   return (
     <Layout>
-      <h2 className="mb-6 text-2xl font-bold">My Bills</h2>
+      <PageHeader title="My Bills" subtitle="Invoices for your consultations" />
 
-      <div className="mb-6 grid gap-4 md:grid-cols-2">
-        <div className="rounded-xl bg-white p-6 shadow-sm ring-1 ring-gray-200 transition hover:shadow-md">
-          <p className="text-gray-500">Total Unpaid</p>
-          <p className="text-3xl font-bold text-red-600">₱2,500.00</p>
-        </div>
-        <div className="rounded-xl bg-white p-6 shadow-sm ring-1 ring-gray-200 transition hover:shadow-md">
-          <p className="text-gray-500">Paid This Year</p>
-          <p className="text-3xl font-bold text-green-600">₱8,200.00</p>
-        </div>
+      <div className="stagger mb-6 grid gap-4 md:grid-cols-2">
+        <StatTile label="Total Unpaid" value="₱2,500.00" icon={Wallet} tone="red" />
+        <StatTile label="Paid This Year" value="₱8,200.00" icon={CircleCheck} tone="green" />
       </div>
 
-      <div className="overflow-x-auto rounded-xl bg-white shadow-sm ring-1 ring-gray-200">
-        <table className="w-full text-left">
-          <thead className="bg-gray-50 text-xs uppercase tracking-wide text-gray-500">
-            <tr>
-              <th className="p-4">Invoice #</th>
-              <th className="p-4">Date</th>
-              <th className="p-4">Description</th>
-              <th className="p-4">Amount</th>
-              <th className="p-4">Status</th>
-              <th className="p-4">Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr className="border-t">
-              <td className="p-4">INV-0003</td>
-              <td className="p-4">Oct 25, 2026</td>
-              <td className="p-4">Cardiology consultation</td>
-              <td className="p-4">₱2,500.00</td>
-              <td className="p-4">
-                <span className="rounded-full bg-red-100 px-3 py-1 text-sm text-red-700">
-                  Unpaid
-                </span>
-              </td>
-              <td className="p-4">
-                <button className="rounded bg-blue-900 px-3 py-1 text-white hover:bg-blue-800">
+      <TableCard
+        headers={['Invoice #', 'Date', 'Description', 'Amount', 'Status', 'Action']}
+      >
+        {bills.map((bill) => (
+          <tr key={bill.id} className="border-t">
+            <td className="p-4 font-medium">{bill.id}</td>
+            <td className="p-4">{bill.date}</td>
+            <td className="p-4">{bill.description}</td>
+            <td className="p-4">{bill.amount}</td>
+            <td className="p-4">
+              <StatusChip status={bill.status} />
+            </td>
+            <td className="p-4">
+              {bill.status === 'Unpaid' ? (
+                <button className="rounded-lg bg-blue-900 px-3 py-1.5 text-sm font-medium text-white hover:bg-blue-800">
                   Pay Now
                 </button>
-              </td>
-            </tr>
-
-            <tr className="border-t">
-              <td className="p-4">INV-0002</td>
-              <td className="p-4">Oct 10, 2026</td>
-              <td className="p-4">General check-up</td>
-              <td className="p-4">₱1,200.00</td>
-              <td className="p-4">
-                <span className="rounded-full bg-green-100 px-3 py-1 text-sm text-green-700">
-                  Paid
-                </span>
-              </td>
-              <td className="p-4">
-                <button className="text-blue-700 hover:underline">View Receipt</button>
-              </td>
-            </tr>
-
-            <tr className="border-t">
-              <td className="p-4">INV-0001</td>
-              <td className="p-4">Sep 20, 2026</td>
-              <td className="p-4">Dermatology consultation</td>
-              <td className="p-4">₱1,800.00</td>
-              <td className="p-4">
-                <span className="rounded-full bg-green-100 px-3 py-1 text-sm text-green-700">
-                  Paid
-                </span>
-              </td>
-              <td className="p-4">
-                <button className="text-blue-700 hover:underline">View Receipt</button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+              ) : (
+                <button className="text-sm text-blue-700 hover:underline">
+                  View Receipt
+                </button>
+              )}
+            </td>
+          </tr>
+        ))}
+      </TableCard>
     </Layout>
   )
 }
