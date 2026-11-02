@@ -114,7 +114,9 @@ function AppShell({ children, portal, groups, user, searchPlaceholder = 'Search.
                 <p className="text-sm font-semibold">{user.name}</p>
                 <p className="text-xs text-gray-500">{user.role}</p>
               </div>
-              <Link to="/" className="text-sm text-gray-500 hover:text-brand">
+              <Link to="/"onClick={() => {localStorage.removeItem('token') 
+                localStorage.removeItem('user')}}
+                className="text-sm text-gray-500 hover:text-brand">
                 Logout
               </Link>
             </div>

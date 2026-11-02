@@ -22,6 +22,7 @@ import AdminPatients from './pages/Adumin/AdminPatients'
 import AdminAppointments from './pages/Adumin/AdminAppointments'
 import AdminBilling from './pages/Adumin/AdminBilling'
 import AdminReports from './pages/Adumin/AdminReports'
+import ProtectedRoute from './components/ProtectedRoute'
 
 function App() {
   return (
@@ -29,26 +30,26 @@ function App() {
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/patient/dashboard" element={<PatientDashboard />} />
-        <Route path="/patient/appointments" element={<PatientAppointments />} />
-        <Route path="/patient/prescriptions" element={<PatientPrescriptions />} />
-        <Route path="/patient/book" element={<BookAppointment />} />
-        <Route path="/patient/bills" element={<PatientBills />} />
-        <Route path="/doctor/dashboard" element={<DoctorDashboard />} />
-        <Route path="/doctor/patients" element={<DoctorPatients />} />
-        <Route path="/doctor/patients/record" element={<DoctorPatientRecord />} />
-        <Route path="/doctor/prescriptions/new" element={<DoctorWritePrescription />} />
-        <Route path="/admin/dashboard" element={<AdminDashboard />} />
-        <Route path="/admin/users" element={<AdminUsers />} />
+        <Route path="/patient/dashboard" element={<ProtectedRoute role="patient"><PatientDashboard /></ProtectedRoute>} />
+        <Route path="/patient/appointments" element={<ProtectedRoute role="patient"><PatientAppointments /></ProtectedRoute>} />
+        <Route path="/patient/prescriptions" element={<ProtectedRoute role="patient"><PatientPrescriptions /></ProtectedRoute>} />
+        <Route path="/patient/book" element={<ProtectedRoute role="patient"><BookAppointment /></ProtectedRoute>} />
+        <Route path="/patient/bills" element={<ProtectedRoute role="patient"><PatientBills /></ProtectedRoute>} />
+        <Route path="/doctor/dashboard" element={<ProtectedRoute role="doctor"><DoctorDashboard /></ProtectedRoute>} />
+        <Route path="/doctor/patients" element={<ProtectedRoute role="doctor"><DoctorPatients /></ProtectedRoute>} />
+        <Route path="/doctor/patients/record" element={<ProtectedRoute role="doctor"><DoctorPatientRecord /></ProtectedRoute>} />
+        <Route path="/doctor/prescriptions/new" element={<ProtectedRoute role="doctor"><DoctorWritePrescription /></ProtectedRoute>} />
+        <Route path="/admin/dashboard" element={<ProtectedRoute role="admin"><AdminDashboard /></ProtectedRoute>} />
+        <Route path="/admin/users" element={<ProtectedRoute role="admin"><AdminUsers /></ProtectedRoute>} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/unauthorized" element={<Unauthorized />} />
         <Route path="/session-expired" element={<SessionExpired />} />
         <Route path="/states" element={<StatesPreview />} />
-        <Route path="/admin/doctors" element={<AdminDoctors />} />
-        <Route path="/admin/patients" element={<AdminPatients />} />
-        <Route path="/admin/appointments" element={<AdminAppointments />} />
-        <Route path="/admin/billing" element={<AdminBilling />} />
-        <Route path="/admin/reports" element={<AdminReports />} />
+        <Route path="/admin/doctors" element={<ProtectedRoute role="admin"><AdminDoctors /></ProtectedRoute>} />
+        <Route path="/admin/patients" element={<ProtectedRoute role="admin"><AdminPatients /></ProtectedRoute>} />
+        <Route path="/admin/appointments" element={<ProtectedRoute role="admin"><AdminAppointments /></ProtectedRoute>} />
+        <Route path="/admin/billing" element={<ProtectedRoute role="admin"><AdminBilling /></ProtectedRoute>} />
+        <Route path="/admin/reports" element={<ProtectedRoute role="admin"><AdminReports /></ProtectedRoute>} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
