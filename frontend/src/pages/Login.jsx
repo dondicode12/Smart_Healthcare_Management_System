@@ -1,29 +1,45 @@
-
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import api, { getErrorMessage } from '../lib/api'
+
+// Where each role lands after signing in
+const homeByRole = {
+  admin: '/admin/dashboard',
+  doctor: '/doctor/dashboard',
+  patient: '/patient/dashboard',
+}
 
 function Login() {
+  const navigate = useNavigate()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [message, setMessage] = useState('')
-  const [messageType, setMessageType] = useState('')
+  const [loading, setLoading] = useState(false)
 
-  function handleLogin(event) {
+  async function handleLogin(event) {
     event.preventDefault()
     setMessage('')
-    setMessageType('')
 
     if (!email.trim() || !password) {
       setMessage('Please enter your email and password.')
-      setMessageType('error')
       return
     }
 
-    setMessage(
-      'Validation successful! Actual sign-in will work once the backend is connected.'
-    )
-    setMessageType('success')
+    setLoading(true)
+    try {
+      const { data } = await api.post('/auth/login', { email, password })
+
+      // Save the token so later requests can prove who we are
+      localStorage.setItem('token', data.token)
+      localStorage.setItem('user', JSON.stringify(data.user))
+
+      navigate(homeByRole[data.user.role] ?? '/')
+    } catch (error) {
+      setMessage(getErrorMessage(error))
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -52,12 +68,8 @@ function Login() {
       {/* Right panel: the form */}
       <div className="flex w-full items-center justify-center bg-white p-8 md:w-1/2">
         <div className="w-full max-w-sm">
-          <h2 className="text-2xl font-bold text-gray-900">
-            Welcome back
-          </h2>
-          <p className="mb-8 mt-1 text-gray-500">
-            Sign in to your account
-          </p>
+          <h2 className="text-2xl font-bold text-gray-900">Welcome back</h2>
+          <p className="mb-8 mt-1 text-gray-500">Sign in to your account</p>
 
           <form onSubmit={handleLogin}>
             <label
@@ -104,36 +116,14 @@ function Login() {
                 className="absolute inset-y-0 right-0 flex items-center px-3 text-gray-500 hover:text-blue-700"
               >
                 {showPassword ? (
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="22"
-                    height="22"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    aria-hidden="true"
-                  >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                     <path d="M3 3l18 18" />
                     <path d="M10.6 10.6a2 2 0 002.8 2.8" />
                     <path d="M9.9 5.2A11 11 0 0112 5c5 0 9 7 9 7a15 15 0 01-3 3.8" />
                     <path d="M6.6 6.6C4.1 8.2 3 12 3 12s4 7 9 7a9 9 0 004.1-1" />
                   </svg>
                 ) : (
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="22"
-                    height="22"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    aria-hidden="true"
-                  >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                     <path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7z" />
                     <circle cx="12" cy="12" r="3" />
                   </svg>
@@ -143,13 +133,9 @@ function Login() {
 
             {message && (
               <p
-                role="status"
+                role="alert"
                 aria-live="polite"
-                className={`mb-4 rounded-lg p-3 text-sm ${
-                  messageType === 'error'
-                    ? 'bg-red-100 text-red-700'
-                    : 'bg-green-100 text-green-700'
-                }`}
+                className="mb-4 rounded-lg bg-red-100 p-3 text-sm text-red-700"
               >
                 {message}
               </p>
@@ -157,18 +143,16 @@ function Login() {
 
             <button
               type="submit"
-              className="w-full rounded-lg bg-blue-900 p-3 font-semibold text-white transition hover:bg-blue-800"
+              disabled={loading}
+              className="w-full rounded-lg bg-blue-900 p-3 font-semibold text-white transition hover:bg-blue-800 disabled:opacity-60"
             >
-              Sign In
+              {loading ? 'Signing in...' : 'Sign In'}
             </button>
           </form>
 
           <p className="mt-6 text-center text-sm text-gray-500">
             Don't have an account?{' '}
-            <Link
-              to="/register"
-              className="font-medium text-blue-700 hover:underline"
-            >
+            <Link to="/register" className="font-medium text-blue-700 hover:underline">
               Sign up
             </Link>
           </p>
