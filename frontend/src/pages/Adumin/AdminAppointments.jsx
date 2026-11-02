@@ -1,9 +1,10 @@
-import { Plus } from 'lucide-react'
+import { CalendarDays, Plus } from 'lucide-react'
 import AdminLayout from '../../components/AdminLayout'
 import Avatar from '../../components/Avatar'
 import PageHeader from '../../components/PageHeader'
 import RowActions from '../../components/RowActions'
 import StatusChip from '../../components/StatusChip'
+import EmptyState from '../../components/EmptyState'
 import TableCard from '../../components/TableCard'
 
 // Fake data. Later this comes from the backend.
@@ -23,6 +24,15 @@ function AdminAppointments() {
 
       <TableCard
         headers={['Patient', 'Doctor', 'Date', 'Time', 'Status', 'Actions']}
+        empty={
+          appointments.length === 0 && (
+            <EmptyState
+              icon={CalendarDays}
+              title="No appointments yet"
+              message="Bookings across all doctors will show up here."
+            />
+          )
+        }
       >
         {appointments.map((item) => (
           <tr key={item.id} className="border-t">

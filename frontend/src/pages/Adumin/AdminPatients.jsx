@@ -1,8 +1,9 @@
-import { Plus } from 'lucide-react'
+import { HeartPulse, Plus } from 'lucide-react'
 import AdminLayout from '../../components/AdminLayout'
 import Avatar from '../../components/Avatar'
 import PageHeader from '../../components/PageHeader'
 import RowActions from '../../components/RowActions'
+import EmptyState from '../../components/EmptyState'
 import TableCard from '../../components/TableCard'
 
 // Fake data. Later this comes from the backend.
@@ -20,7 +21,16 @@ function AdminPatients() {
         </button>
       </PageHeader>
 
-      <TableCard headers={['Name', 'Age', 'Phone', 'Email', 'Actions']}>
+      <TableCard headers={['Name', 'Age', 'Phone', 'Email', 'Actions']}
+        empty={
+          patients.length === 0 && (
+            <EmptyState
+              icon={HeartPulse}
+              title="No patients yet"
+              message="Registered patients will show up here."
+            />
+          )
+        }>
         {patients.map((patient) => (
           <tr key={patient.id} className="border-t">
             <td className="p-4">

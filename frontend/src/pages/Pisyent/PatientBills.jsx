@@ -1,8 +1,9 @@
-import { CircleCheck, Wallet } from 'lucide-react'
+import { CircleCheck, Receipt, Wallet } from 'lucide-react'
 import Layout from '../../components/Layout'
 import PageHeader from '../../components/PageHeader'
 import StatTile from '../../components/StatTile'
 import StatusChip from '../../components/StatusChip'
+import EmptyState from '../../components/EmptyState'
 import TableCard from '../../components/TableCard'
 
 // Fake data. Later this comes from the backend.
@@ -42,6 +43,15 @@ function PatientBills() {
 
       <TableCard
         headers={['Invoice #', 'Date', 'Description', 'Amount', 'Status', 'Action']}
+        empty={
+          bills.length === 0 && (
+            <EmptyState
+              icon={Receipt}
+              title="No bills yet"
+              message="Invoices for your visits will show up here."
+            />
+          )
+        }
       >
         {bills.map((bill) => (
           <tr key={bill.id} className="border-t">

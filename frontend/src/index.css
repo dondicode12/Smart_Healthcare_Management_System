@@ -140,6 +140,30 @@
   animation: draw 1.2s ease-out 0.2s forwards;
 }
 
+/* Loading placeholder: a soft shimmer that follows the light/dark theme */
+@keyframes shimmer {
+  0% { background-position: 100% 50%; }
+  100% { background-position: 0 50%; }
+}
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--color-gray-100) 25%,
+    var(--color-gray-200) 37%,
+    var(--color-gray-100) 63%
+  );
+  background-size: 400% 100%;
+  animation: shimmer 1.4s ease infinite;
+}
+
+/* Success check pops in */
+@keyframes pop {
+  0% { opacity: 0; transform: scale(0.6); }
+  70% { transform: scale(1.08); }
+  100% { opacity: 1; transform: scale(1); }
+}
+.pop-in { animation: pop 0.45s ease-out both; }
+
 /* Smooth light/dark switch */
 ::view-transition-old(root),
 ::view-transition-new(root) {

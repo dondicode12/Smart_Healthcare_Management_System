@@ -1,7 +1,9 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Search } from 'lucide-react'
+import { Search, SearchX } from 'lucide-react'
 import DoctorLayout from '../../components/DoctorLayout'
 import Avatar from '../../components/Avatar'
+import EmptyState from '../../components/EmptyState'
 import PageHeader from '../../components/PageHeader'
 import TableCard from '../../components/TableCard'
 
@@ -12,6 +14,29 @@ const patients = [
 ]
 
 function DoctorPatients() {
+  const [query, setQuery] = useState('')
+
+  // Keep only the patients whose name contains what was typed
+  const results = patients.filter((patient) =>
+    patient.name.toLowerCase().includes(query.trim().toLowerCase())
+  )
+
+  const noResults = (
+    <EmptyState
+      icon={SearchX}
+      title={`No patients match "${query}"`}
+      message="Check the spelling, or try just the first or last name."
+      action={
+        <button
+          onClick={() => setQuery('')}
+          className="rounded-lg bg-blue-900 px-4 py-2 font-semibold text-white hover:bg-blue-800"
+        >
+          Clear search
+        </button>
+      }
+    />
+  )
+
   return (
     <DoctorLayout>
       <PageHeader title="My Patients" subtitle="Patients you have treated">
@@ -19,14 +44,19 @@ function DoctorPatients() {
           <Search size={16} />
           <input
             type="text"
+            value={query}
+            onChange={(event) => setQuery(event.target.value)}
             placeholder="Search patients..."
             className="w-48 bg-transparent text-sm text-gray-700 outline-none placeholder:text-gray-400"
           />
         </div>
       </PageHeader>
 
-      <TableCard headers={['Name', 'Age', 'Phone', 'Last Visit', 'Action']}>
-        {patients.map((patient) => (
+      <TableCard
+        headers={['Name', 'Age', 'Phone', 'Last Visit', 'Action']}
+        empty={results.length === 0 && noResults}
+      >
+        {results.map((patient) => (
           <tr key={patient.id} className="border-t">
             <td className="p-4">
               <div className="flex items-center gap-3">

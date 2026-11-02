@@ -14,6 +14,8 @@ import AdminDashboard from './pages/Adumin/AdminDashboard'
 import AdminUsers from './pages/Adumin/AdminUsers'
 import NotFound from './pages/NotFound'
 import Unauthorized from './pages/Unauthorized'
+import SessionExpired from './pages/SessionExpired'
+import StatesPreview from './pages/StatesPreview'
 import Profile from './pages/Profile'
 import AdminDoctors from './pages/Adumin/AdminDoctors'
 import AdminPatients from './pages/Adumin/AdminPatients'
@@ -40,6 +42,8 @@ function App() {
         <Route path="/admin/users" element={<AdminUsers />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/unauthorized" element={<Unauthorized />} />
+        <Route path="/session-expired" element={<SessionExpired />} />
+        <Route path="/states" element={<StatesPreview />} />
         <Route path="/admin/doctors" element={<AdminDoctors />} />
         <Route path="/admin/patients" element={<AdminPatients />} />
         <Route path="/admin/appointments" element={<AdminAppointments />} />
