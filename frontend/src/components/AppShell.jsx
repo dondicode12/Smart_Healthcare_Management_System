@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link, NavLink } from 'react-router-dom'
 import { Bell, Menu, Search } from 'lucide-react'
+import OfflineBanner from './OfflineBanner'
 import ThemeToggle from './ThemeToggle'
 import { getInitials } from '../lib/initials'
 
@@ -72,6 +73,7 @@ function AppShell({ children, portal, groups, user, searchPlaceholder = 'Search.
       </aside>
 
       <div className="min-w-0 flex-1">
+        <OfflineBanner />
         <header className="sticky top-0 z-20 flex items-center justify-between gap-3 border-b border-gray-200 bg-white/80 px-4 py-3 backdrop-blur md:px-8">
           <div className="flex items-center gap-3">
             {/* Menu button: only shows on phones */}

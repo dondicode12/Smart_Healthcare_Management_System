@@ -1,9 +1,10 @@
-import { Plus } from 'lucide-react'
+import { Plus, Users } from 'lucide-react'
 import AdminLayout from '../../components/AdminLayout'
 import Avatar from '../../components/Avatar'
 import PageHeader from '../../components/PageHeader'
 import RowActions from '../../components/RowActions'
 import StatusChip from '../../components/StatusChip'
+import EmptyState from '../../components/EmptyState'
 import TableCard from '../../components/TableCard'
 
 // Fake data. Later this comes from the backend.
@@ -22,7 +23,16 @@ function AdminUsers() {
         </button>
       </PageHeader>
 
-      <TableCard headers={['Name', 'Email', 'Role', 'Status', 'Actions']}>
+      <TableCard headers={['Name', 'Email', 'Role', 'Status', 'Actions']}
+        empty={
+          users.length === 0 && (
+            <EmptyState
+              icon={Users}
+              title="No users yet"
+              message="People who can sign in to BLASTCARE will be listed here."
+            />
+          )
+        }>
         {users.map((user) => (
           <tr key={user.id} className="border-t">
             <td className="p-4">

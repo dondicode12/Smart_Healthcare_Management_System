@@ -1,8 +1,9 @@
-import { Plus } from 'lucide-react'
+import { Plus, Stethoscope } from 'lucide-react'
 import AdminLayout from '../../components/AdminLayout'
 import Avatar from '../../components/Avatar'
 import PageHeader from '../../components/PageHeader'
 import RowActions from '../../components/RowActions'
+import EmptyState from '../../components/EmptyState'
 import TableCard from '../../components/TableCard'
 
 // Fake data. Later this comes from the backend.
@@ -20,7 +21,16 @@ function AdminDoctors() {
         </button>
       </PageHeader>
 
-      <TableCard headers={['Name', 'Specialty', 'Email', 'Availability', 'Actions']}>
+      <TableCard headers={['Name', 'Specialty', 'Email', 'Availability', 'Actions']}
+        empty={
+          doctors.length === 0 && (
+            <EmptyState
+              icon={Stethoscope}
+              title="No doctors yet"
+              message="Add a doctor to start scheduling appointments."
+            />
+          )
+        }>
         {doctors.map((doctor) => (
           <tr key={doctor.id} className="border-t">
             <td className="p-4">

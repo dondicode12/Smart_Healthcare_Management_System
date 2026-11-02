@@ -1,9 +1,10 @@
-import { Plus } from 'lucide-react'
+import { Plus, Receipt } from 'lucide-react'
 import AdminLayout from '../../components/AdminLayout'
 import Avatar from '../../components/Avatar'
 import PageHeader from '../../components/PageHeader'
 import RowActions from '../../components/RowActions'
 import StatusChip from '../../components/StatusChip'
+import EmptyState from '../../components/EmptyState'
 import TableCard from '../../components/TableCard'
 
 // Fake data. Later this comes from the backend.
@@ -21,7 +22,16 @@ function AdminBilling() {
         </button>
       </PageHeader>
 
-      <TableCard headers={['Invoice #', 'Patient', 'Amount', 'Status', 'Actions']}>
+      <TableCard headers={['Invoice #', 'Patient', 'Amount', 'Status', 'Actions']}
+        empty={
+          invoices.length === 0 && (
+            <EmptyState
+              icon={Receipt}
+              title="No invoices yet"
+              message="Invoices will appear here once appointments are billed."
+            />
+          )
+        }>
         {invoices.map((invoice) => (
           <tr key={invoice.id} className="border-t">
             <td className="p-4 font-medium">{invoice.id}</td>

@@ -1,6 +1,9 @@
 // A card holding a table. Pass the column names as `headers`
 // and the <tr> rows as children.
-function TableCard({ headers, children }) {
+// Pass `empty` (an <EmptyState />) to show it instead of the table.
+function TableCard({ headers, children, empty }) {
+  if (empty) return empty
+
   return (
     <div className="card overflow-x-auto">
       <table className="w-full text-left">
