@@ -69,9 +69,10 @@
   html { scroll-behavior: smooth; }
 
   body {
-    background-color: var(--color-page);
-    color: var(--color-ink);
-  }
+  font-family: var(--font-sans);
+  background-color: var(--color-page);
+  color: var(--color-ink);
+}
 
   input, select, textarea {
     transition: border-color 0.15s ease, box-shadow 0.15s ease;
@@ -178,4 +179,27 @@
     scroll-behavior: auto !important;
   }
   .draw-line { stroke-dashoffset: 0; }
+}
+
+/* ---------- Enhanced hover effects ---------- */
+
+.card {
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(30, 58, 138, 0.10);
+  }
+}
+
+button:not(:disabled):hover {
+  filter: brightness(0.96);
+}
+
+input:hover,
+select:hover,
+textarea:hover {
+  border-color: #93c5fd;
 }
