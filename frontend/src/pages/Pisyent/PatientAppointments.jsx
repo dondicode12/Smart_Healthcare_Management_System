@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { CalendarPlus } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import AsyncBoundary from '../../components/AsyncBoundary'
@@ -5,30 +6,40 @@ import EmptyState from '../../components/EmptyState'
 import Layout from '../../components/Layout'
 import StatusChip from '../../components/StatusChip'
 import TableCard from '../../components/TableCard'
+import api, { getErrorMessage } from '../../lib/api'
 import useApi from '../../lib/useApi'
 import { formatDate, formatTime, withDr } from '../../lib/format'
-
+ 
 function PatientAppointments() {
   const { data, loading, error, retry, setData } = useApi('/appointments')
   const appointments = data ?? []
-
-  const handleCancel = (id) => {
+  // Message shown above the table if a cancel fails
+  const [cancelError, setCancelError] = useState('')
+ 
+  async function handleCancel(id) {
     const confirmed = window.confirm(
       'Are you sure you want to cancel this appointment?'
     )
-
     if (!confirmed) return
-
-    // TODO (backend): call the real cancel route first, then update the list
-    setData((previous) =>
-      previous.map((appointment) =>
-        appointment.appointment_id === id
-          ? { ...appointment, status: 'cancelled' }
-          : appointment
+ 
+    setCancelError('')
+    try {
+      // The server changes the status to 'cancelled' (the row is kept, not deleted)
+      await api.put(`/appointments/${id}/cancel`)
+ 
+      // Only update the screen AFTER the server said yes
+      setData((previous) =>
+        previous.map((appointment) =>
+          appointment.appointment_id === id
+            ? { ...appointment, status: 'cancelled' }
+            : appointment
+        )
       )
-    )
+    } catch (err) {
+      setCancelError(getErrorMessage(err))
+    }
   }
-
+ 
   return (
     <Layout>
       <div className="mb-6 flex items-center justify-between">
@@ -40,7 +51,13 @@ function PatientAppointments() {
           Book Appointment
         </Link>
       </div>
-
+ 
+      {cancelError && (
+        <p role="alert" className="mb-4 rounded-lg bg-red-100 p-3 text-sm text-red-700">
+          {cancelError}
+        </p>
+      )}
+ 
       <AsyncBoundary loading={loading} error={error} onRetry={retry}>
         <TableCard
           headers={['Date', 'Time', 'Doctor', 'Specialty', 'Status', 'Action']}
@@ -83,5 +100,5 @@ function PatientAppointments() {
     </Layout>
   )
 }
-
+ 
 export default PatientAppointments
