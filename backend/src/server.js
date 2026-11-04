@@ -3,6 +3,7 @@ import express from 'express'
 import cors from 'cors'
 import pool from './db.js'
 import authRoutes from './routes/auth.js'
+import doctorRoutes from './routes/doctors.js'
 
 if (!process.env.DATABASE_URL || !process.env.JWT_SECRET) {
   console.error('Missing DATABASE_URL or JWT_SECRET. Copy .env.example to .env and fill it in.')
@@ -27,6 +28,7 @@ app.get('/api/v1/health', async (req, res) => {
 })
 
 app.use('/api/v1/auth', authRoutes)
+app.use('/api/v1/doctors', doctorRoutes)
 
 app.use((req, res) => {
   res.status(404).json({ error: { code: 'NOT_FOUND', message: 'Route not found.' } })
