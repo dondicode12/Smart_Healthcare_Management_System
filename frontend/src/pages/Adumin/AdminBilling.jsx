@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { Plus, Receipt } from 'lucide-react'
 import AdminLayout from '../../components/AdminLayout'
 import Avatar from '../../components/Avatar'
@@ -6,14 +7,25 @@ import RowActions from '../../components/RowActions'
 import StatusChip from '../../components/StatusChip'
 import EmptyState from '../../components/EmptyState'
 import TableCard from '../../components/TableCard'
+import ConfirmDialog from '../../components/ConfirmDialog'
 
 // Fake data. Later this comes from the backend.
-const invoices = [
+const initialInvoices = [
   { id: 'INV-001', patient: 'Don Marco Del Campo', amount: '₱1,500.00', status: 'Paid' },
   { id: 'INV-002', patient: 'Sean Kyle Quintos', amount: '₱2,000.00', status: 'Pending' },
 ]
 
 function AdminBilling() {
+  const [invoices, setInvoices] = useState(initialInvoices)
+  // The row the admin clicked Delete on (null = no popup)
+  const [toDelete, setToDelete] = useState(null)
+
+  function confirmDelete() {
+    // TODO (backend): await api.delete(`/invoices/${toDelete.id}`) before updating the list
+    setInvoices((previous) => previous.filter((entry) => entry.id !== toDelete.id))
+    setToDelete(null)
+  }
+
   return (
     <AdminLayout>
       <PageHeader title="Billing and Invoices" subtitle="Charges and payment status">
@@ -46,11 +58,19 @@ function AdminBilling() {
               <StatusChip status={invoice.status} />
             </td>
             <td className="p-4">
-              <RowActions />
+              <RowActions onDelete={() => setToDelete(invoice)} />
             </td>
           </tr>
         ))}
       </TableCard>
+
+      <ConfirmDialog
+        open={toDelete !== null}
+        title="Delete this invoice?"
+        message={toDelete ? toDelete.id : ''}
+        onConfirm={confirmDelete}
+        onCancel={() => setToDelete(null)}
+      />
     </AdminLayout>
   )
 }
