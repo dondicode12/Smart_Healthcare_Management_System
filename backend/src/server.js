@@ -11,6 +11,7 @@ import appointmentRoutes from './routes/appointments.js'
 import invoiceRoutes from './routes/invoices.js'
 import prescriptionRoutes from './routes/prescriptions.js'
 import dashboardRoutes from './routes/dashboard.js'
+import aiRoutes from './routes/ai.js'
 
 if (!process.env.DATABASE_URL || !process.env.JWT_SECRET) {
   console.error('Missing DATABASE_URL or JWT_SECRET. Copy .env.example to .env and fill it in.')
@@ -43,6 +44,7 @@ app.use('/api/v1/appointments', appointmentRoutes)
 app.use('/api/v1/invoices', invoiceRoutes)
 app.use('/api/v1/prescriptions', prescriptionRoutes)
 app.use('/api/v1/dashboard', dashboardRoutes)
+app.use('/api/v1/ai', aiRoutes)
 
 app.use((req, res) => {
   res.status(404).json({ error: { code: 'NOT_FOUND', message: 'Route not found.' } })

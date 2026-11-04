@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { Send, Sparkles, X } from 'lucide-react'
+import api, { getErrorMessage } from '../lib/api'
 
 // Quick-start questions shown as chips. One list per portal.
 const suggestionsByPortal = {
@@ -10,8 +11,8 @@ const suggestionsByPortal = {
   ],
   'Doctor Portal': [
     'Who are my patients today?',
-    'Show Juan Dela Cruz\'s last visit',
-    'Which prescriptions are pending?',
+    'Show my most recent completed visits',
+    'How many prescriptions are still pending?',
   ],
   'Admin Portal': [
     'How many appointments are today?',
@@ -22,7 +23,8 @@ const suggestionsByPortal = {
 
 // The AI chatbot panel. It slides in from the right on desktop
 // and fills the whole screen on phones.
-// For now it only shows a fake reply. The backend hookup is marked TODO below.
+// Questions go to POST /ai/chat. The backend reads this user's own records from the
+// database, hands them to the AI model, and returns the answer.
 function AssistantChat({ open, onClose, portal }) {
   const [messages, setMessages] = useState([
     {
@@ -56,28 +58,31 @@ function AssistantChat({ open, onClose, portal }) {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages, thinking])
 
-  function send(text) {
+  async function send(text) {
     const question = text.trim()
     if (!question || thinking) return
+
+    // The last few messages (without the greeting) give the AI some memory
+    const history = messages
+      .filter((message) => message.id !== 1)
+      .slice(-6)
+      .map(({ from, text }) => ({ from, text }))
 
     setMessages((prev) => [...prev, { id: Date.now(), from: 'user', text: question }])
     setDraft('')
     setThinking(true)
 
-    // TODO (backend): replace this fake reply with a real call, for example:
-    //   const { data } = await api.post('/ai/chat', { message: question })
-    //   then show data.reply
-    setTimeout(() => {
+    try {
+      const { data } = await api.post('/ai/chat', { message: question, history })
+      setMessages((prev) => [...prev, { id: Date.now() + 1, from: 'ai', text: data.reply }])
+    } catch (error) {
       setMessages((prev) => [
         ...prev,
-        {
-          id: Date.now() + 1,
-          from: 'ai',
-          text: 'The AI is not connected yet. Once the backend is ready, I will answer using the database.',
-        },
+        { id: Date.now() + 1, from: 'ai', text: getErrorMessage(error) },
       ])
+    } finally {
       setThinking(false)
-    }, 900)
+    }
   }
 
   function handleSubmit(event) {
@@ -128,7 +133,7 @@ function AssistantChat({ open, onClose, portal }) {
               className={`flex ${message.from === 'user' ? 'justify-end' : 'justify-start'}`}
             >
               <p
-                className={`max-w-[85%] rounded-2xl px-4 py-2.5 text-sm ${
+                className={`max-w-[85%] whitespace-pre-wrap rounded-2xl px-4 py-2.5 text-sm ${
                   message.from === 'user'
                     ? 'rounded-br-md bg-blue-900 text-white'
                     : 'rounded-bl-md bg-gray-100 text-gray-800'
@@ -173,6 +178,7 @@ function AssistantChat({ open, onClose, portal }) {
               type="text"
               value={draft}
               onChange={(event) => setDraft(event.target.value)}
+              maxLength={500}
               placeholder="Type your question..."
               className="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-2.5 text-sm"
             />
