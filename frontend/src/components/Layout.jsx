@@ -7,6 +7,7 @@ import {
   User,
 } from 'lucide-react'
 import AppShell from './AppShell'
+import { getLayoutUser } from '../lib/auth'
 
 // Patient portal frame. Edit the links here.
 const groups = [
@@ -28,15 +29,12 @@ const groups = [
   },
 ]
 
-// Placeholder user. Later this comes from the login.
-const user = { name: 'Juan Dela Cruz', role: 'Patient' }
-
 function Layout({ children }) {
   return (
     <AppShell
       portal="Patient Portal"
       groups={groups}
-      user={user}
+      user={getLayoutUser()}
       searchPlaceholder="Search doctors, records..."
     >
       {children}

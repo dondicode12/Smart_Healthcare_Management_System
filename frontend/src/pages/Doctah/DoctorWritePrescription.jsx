@@ -1,8 +1,12 @@
-  
 import { useState } from 'react'
 import DoctorLayout from '../../components/DoctorLayout'
+import useApi from '../../lib/useApi'
 
 function DoctorWritePrescription() {
+  // The patient dropdown is filled from the database (this doctor's patients)
+  const { data: patientList } = useApi('/patients')
+  const patients = patientList ?? []
+
   const [patient, setPatient] = useState('')
   const [medicine, setMedicine] = useState('')
   const [dosage, setDosage] = useState('')
@@ -34,6 +38,7 @@ function DoctorWritePrescription() {
       return
     }
 
+    // TODO (backend): POST /prescriptions with { patient_id: patient, ... }
     setMessage(
       'Prescription details validated successfully! Saving will be available once the backend is connected.'
     )
@@ -79,8 +84,11 @@ function DoctorWritePrescription() {
             className="mb-4 mt-1 w-full rounded border border-gray-300 p-2"
           >
             <option value="">Select a patient</option>
-            <option value="Juan Dela Cruz">Juan Dela Cruz</option>
-            <option value="Ana Reyes">Ana Reyes</option>
+            {patients.map((p) => (
+              <option key={p.patient_id} value={p.patient_id}>
+                {p.name}
+              </option>
+            ))}
           </select>
 
           <label className="block text-sm font-medium text-gray-700">

@@ -11,6 +11,7 @@ router.get('/', verifyToken, async (req, res, next) => {
       `SELECT d.doctor_id,
               u.first_name || ' ' || u.last_name AS name,
               u.email,
+              d.specialty_id,
               s.name AS specialty,
               d.consultation_fee
        FROM doctors d
