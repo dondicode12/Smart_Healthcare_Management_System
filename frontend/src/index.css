@@ -71,6 +71,7 @@
   body {
     background-color: var(--color-page);
     color: var(--color-ink);
+    font-family: var(--font-sans);
   }
 
   input, select, textarea {
@@ -178,4 +179,37 @@
     scroll-behavior: auto !important;
   }
   .draw-line { stroke-dashoffset: 0; }
+}
+
+/* ---------- Enhanced hover and touch effects ---------- */
+
+.card {
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(30, 58, 138, 0.10);
+  }
+}
+
+button:not(:disabled):hover {
+  filter: brightness(0.96);
+}
+
+a {
+  transition: color 0.2s ease,
+              background-color 0.2s ease,
+              border-color 0.2s ease;
+}
+
+input:hover,
+select:hover,
+textarea:hover {
+  border-color: #93c5fd;
+}
+
+[role="button"]:active {
+  transform: scale(0.98);
 }
