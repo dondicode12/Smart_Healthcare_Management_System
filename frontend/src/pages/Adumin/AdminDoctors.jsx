@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { Plus, Stethoscope } from 'lucide-react'
 import AdminLayout from '../../components/AdminLayout'
 import Avatar from '../../components/Avatar'
@@ -5,14 +6,25 @@ import PageHeader from '../../components/PageHeader'
 import RowActions from '../../components/RowActions'
 import EmptyState from '../../components/EmptyState'
 import TableCard from '../../components/TableCard'
+import ConfirmDialog from '../../components/ConfirmDialog'
 
 // Fake data. Later this comes from the backend.
-const doctors = [
+const initialDoctors = [
   { id: 1, name: 'Dr. Maria Santos', specialty: 'Cardiology', email: 'maria@blastcare.com', availability: 'Mon-Fri' },
   { id: 2, name: 'Dr. Jose Reyes', specialty: 'Dermatology', email: 'jose@blastcare.com', availability: 'Tue, Thu, Sat' },
 ]
 
 function AdminDoctors() {
+  const [doctors, setDoctors] = useState(initialDoctors)
+  // The row the admin clicked Delete on (null = no popup)
+  const [toDelete, setToDelete] = useState(null)
+
+  function confirmDelete() {
+    // TODO (backend): await api.delete(`/doctors/${toDelete.id}`) before updating the list
+    setDoctors((previous) => previous.filter((entry) => entry.id !== toDelete.id))
+    setToDelete(null)
+  }
+
   return (
     <AdminLayout>
       <PageHeader title="Manage Doctors" subtitle="Doctors and their availability">
@@ -43,11 +55,19 @@ function AdminDoctors() {
             <td className="p-4">{doctor.email}</td>
             <td className="p-4">{doctor.availability}</td>
             <td className="p-4">
-              <RowActions />
+              <RowActions onDelete={() => setToDelete(doctor)} />
             </td>
           </tr>
         ))}
       </TableCard>
+
+      <ConfirmDialog
+        open={toDelete !== null}
+        title="Delete this doctor?"
+        message={toDelete ? toDelete.name : ''}
+        onConfirm={confirmDelete}
+        onCancel={() => setToDelete(null)}
+      />
     </AdminLayout>
   )
 }
