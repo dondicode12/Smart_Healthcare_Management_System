@@ -119,12 +119,12 @@ router.post('/register', async (req, res, next) => {
 router.get('/me', verifyToken, async (req, res, next) => {
   try {
     const { rows } = await pool.query(
-      'SELECT user_id, role, email, first_name, last_name FROM users WHERE user_id = $1',
+      'SELECT user_id, role, email, first_name, last_name, phone FROM users WHERE user_id = $1',
       [req.user.id],
     )
     if (!rows[0]) return fail(res, 404, 'NOT_FOUND', 'User not found.')
     const u = rows[0]
-    res.json({ id: u.user_id, name: `${u.first_name} ${u.last_name}`, email: u.email, role: u.role })
+    res.json({ id: u.user_id, name: `${u.first_name} ${u.last_name}`, email: u.email, role: u.role, phone: u.phone ?? '' })
   } catch (err) {
     next(err)
   }

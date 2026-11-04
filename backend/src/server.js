@@ -4,6 +4,13 @@ import cors from 'cors'
 import pool from './db.js'
 import authRoutes from './routes/auth.js'
 import doctorRoutes from './routes/doctors.js'
+import specialtyRoutes from './routes/specialties.js'
+import userRoutes from './routes/users.js'
+import patientRoutes from './routes/patients.js'
+import appointmentRoutes from './routes/appointments.js'
+import invoiceRoutes from './routes/invoices.js'
+import prescriptionRoutes from './routes/prescriptions.js'
+import dashboardRoutes from './routes/dashboard.js'
 
 if (!process.env.DATABASE_URL || !process.env.JWT_SECRET) {
   console.error('Missing DATABASE_URL or JWT_SECRET. Copy .env.example to .env and fill it in.')
@@ -29,6 +36,13 @@ app.get('/api/v1/health', async (req, res) => {
 
 app.use('/api/v1/auth', authRoutes)
 app.use('/api/v1/doctors', doctorRoutes)
+app.use('/api/v1/specialties', specialtyRoutes)
+app.use('/api/v1/users', userRoutes)
+app.use('/api/v1/patients', patientRoutes)
+app.use('/api/v1/appointments', appointmentRoutes)
+app.use('/api/v1/invoices', invoiceRoutes)
+app.use('/api/v1/prescriptions', prescriptionRoutes)
+app.use('/api/v1/dashboard', dashboardRoutes)
 
 app.use((req, res) => {
   res.status(404).json({ error: { code: 'NOT_FOUND', message: 'Route not found.' } })

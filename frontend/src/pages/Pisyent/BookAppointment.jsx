@@ -1,8 +1,15 @@
-
 import { useState } from 'react'
 import Layout from '../../components/Layout'
+import useApi from '../../lib/useApi'
+import { withDr } from '../../lib/format'
 
 function BookAppointment() {
+  // Both dropdowns are filled from the database
+  const { data: specialtyList } = useApi('/specialties')
+  const { data: doctorList } = useApi('/doctors')
+  const specialties = specialtyList ?? []
+  const doctors = doctorList ?? []
+
   const [specialty, setSpecialty] = useState('')
   const [doctor, setDoctor] = useState('')
   const [date, setDate] = useState('')
@@ -11,12 +18,22 @@ function BookAppointment() {
   const [message, setMessage] = useState('')
   const [messageType, setMessageType] = useState('')
 
+  // Only show the doctors of the chosen specialty
+  const doctorsInSpecialty = doctors.filter(
+    (d) => String(d.specialty_id) === specialty
+  )
+
   const today = new Date()
   const minDate = [
     today.getFullYear(),
     String(today.getMonth() + 1).padStart(2, '0'),
     String(today.getDate()).padStart(2, '0'),
   ].join('-')
+
+  function handleSpecialtyChange(value) {
+    setSpecialty(value)
+    setDoctor('') // the old doctor may not belong to the new specialty
+  }
 
   function handleSubmit(event) {
     event.preventDefault()
@@ -34,16 +51,17 @@ function BookAppointment() {
       setMessageType('error')
       return
     }
-    
+
     const now = new Date()
     const currentTime = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`
-    
+
     if (date === minDate && time <= currentTime) {
       setMessage('Please select a future time.')
       setMessageType('error')
       return
     }
-    
+
+    // TODO (backend): POST /appointments with { doctor_id: doctor, appointment_date: date, start_time: time, reason }
     setMessage(
       'Appointment details validated successfully! Booking will be available once the backend is connected.'
     )
@@ -84,15 +102,16 @@ function BookAppointment() {
           </label>
           <select
             value={specialty}
-            onChange={(e) => setSpecialty(e.target.value)}
+            onChange={(e) => handleSpecialtyChange(e.target.value)}
             required
             className="mb-4 mt-1 w-full rounded border border-gray-300 p-2"
           >
             <option value="">Select a specialty</option>
-            <option value="General Medicine">General Medicine</option>
-            <option value="Cardiology">Cardiology</option>
-            <option value="Dermatology">Dermatology</option>
-            <option value="Pediatrics">Pediatrics</option>
+            {specialties.map((s) => (
+              <option key={s.specialty_id} value={s.specialty_id}>
+                {s.name}
+              </option>
+            ))}
           </select>
 
           <label className="block text-sm font-medium text-gray-700">
@@ -102,12 +121,17 @@ function BookAppointment() {
             value={doctor}
             onChange={(e) => setDoctor(e.target.value)}
             required
-            className="mb-4 mt-1 w-full rounded border border-gray-300 p-2"
+            disabled={!specialty}
+            className="mb-4 mt-1 w-full rounded border border-gray-300 p-2 disabled:opacity-60"
           >
-            <option value="">Select a doctor</option>
-            <option value="Dr. Maria Santos">Dr. Maria Santos</option>
-            <option value="Dr. Jose Reyes">Dr. Jose Reyes</option>
-            <option value="Dr. Ana Cruz">Dr. Ana Cruz</option>
+            <option value="">
+              {specialty ? 'Select a doctor' : 'Choose a specialty first'}
+            </option>
+            {doctorsInSpecialty.map((d) => (
+              <option key={d.doctor_id} value={d.doctor_id}>
+                {withDr(d.name)}
+              </option>
+            ))}
           </select>
 
           <div className="mb-4 grid gap-4 md:grid-cols-2">

@@ -5,8 +5,9 @@ function AreaChart({ data }) {
   const height = 220
   const pad = { top: 16, right: 12, bottom: 28, left: 12 }
 
-  const max = Math.max(...data.map((d) => d.value))
-  const stepX = (width - pad.left - pad.right) / (data.length - 1)
+  // The ", 1" keeps the chart from dividing by zero when every value is 0
+  const max = Math.max(...data.map((d) => d.value), 1)
+  const stepX = (width - pad.left - pad.right) / Math.max(data.length - 1, 1)
 
   const points = data.map((d, i) => ({
     x: pad.left + i * stepX,

@@ -8,6 +8,7 @@ import {
   BarChart3,
 } from 'lucide-react'
 import AppShell from './AppShell'
+import { getLayoutUser } from '../lib/auth'
 
 // Admin portal frame. Edit the links here.
 const groups = [
@@ -35,15 +36,12 @@ const groups = [
   },
 ]
 
-// Placeholder user. Later this comes from the login.
-const user = { name: 'Rico Dizon', role: 'Administrator' }
-
 function AdminLayout({ children }) {
   return (
     <AppShell
       portal="Admin Portal"
       groups={groups}
-      user={user}
+      user={getLayoutUser()}
       searchPlaceholder="Search users, invoices..."
     >
       {children}

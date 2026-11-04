@@ -1,11 +1,15 @@
-
 import { useState } from 'react'
+import AsyncBoundary from '../components/AsyncBoundary'
 import Layout from '../components/Layout'
+import { Skeleton } from '../components/Skeleton'
+import useApi from '../lib/useApi'
 
-function Profile() {
-  const [fullName, setFullName] = useState('Juan Dela Cruz')
-  const [email, setEmail] = useState('juan@email.com')
-  const [phone, setPhone] = useState('0917 123 4567')
+// The two forms. They only open AFTER the profile has loaded,
+// so their starting values are the real ones from the database.
+function ProfileForms({ initial }) {
+  const [fullName, setFullName] = useState(initial.name)
+  const [email, setEmail] = useState(initial.email)
+  const [phone, setPhone] = useState(initial.phone ?? '')
 
   const [currentPassword, setCurrentPassword] = useState('')
   const [newPassword, setNewPassword] = useState('')
@@ -25,6 +29,7 @@ function Profile() {
       return
     }
 
+    // TODO (backend): PUT /auth/me to save the changes
     setProfileMessage(
       'Profile details validated successfully! Saving will be available once the backend is connected.'
     )
@@ -50,6 +55,7 @@ function Profile() {
       return
     }
 
+    // TODO (backend): PUT /auth/password to change the password
     setPasswordMessage(
       'Password details validated successfully! Updating will be available once the backend is connected.'
     )
@@ -60,9 +66,7 @@ function Profile() {
   }
 
   return (
-    <Layout>
-      <h2 className="mb-6 text-2xl font-bold">Profile & Settings</h2>
-
+    <>
       <div className="mb-6 max-w-xl rounded-xl bg-white p-8 shadow-sm ring-1 ring-gray-200">
         <h3 className="mb-4 text-lg font-semibold text-blue-900">
           Personal Information
@@ -182,6 +186,25 @@ function Profile() {
           </button>
         </form>
       </div>
+    </>
+  )
+}
+
+function Profile() {
+  const { data, loading, error, retry } = useApi('/auth/me')
+
+  return (
+    <Layout>
+      <h2 className="mb-6 text-2xl font-bold">Profile & Settings</h2>
+
+      <AsyncBoundary
+        loading={loading}
+        error={error}
+        onRetry={retry}
+        skeleton={<Skeleton className="h-64 max-w-xl" />}
+      >
+        {data && <ProfileForms initial={data} />}
+      </AsyncBoundary>
     </Layout>
   )
 }
