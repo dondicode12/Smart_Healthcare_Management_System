@@ -1,53 +1,26 @@
-import {
-  LayoutDashboard,
-  Users,
-  Stethoscope,
-  HeartPulse,
-  CalendarDays,
-  Receipt,
-  BarChart3,
-} from 'lucide-react'
-import AppShell from './AppShell'
-
-// Admin portal frame. Edit the links here.
-const groups = [
-  {
-    label: 'Overview',
-    items: [
-      { to: '/admin/dashboard', label: 'Dashboard', icon: LayoutDashboard },
-    ],
-  },
-  {
-    label: 'People',
-    items: [
-      { to: '/admin/users', label: 'Manage Users', icon: Users },
-      { to: '/admin/doctors', label: 'Manage Doctors', icon: Stethoscope },
-      { to: '/admin/patients', label: 'Manage Patients', icon: HeartPulse },
-    ],
-  },
-  {
-    label: 'Operations',
-    items: [
-      { to: '/admin/appointments', label: 'Manage Appointments', icon: CalendarDays },
-      { to: '/admin/billing', label: 'Billing', icon: Receipt },
-      { to: '/admin/reports', label: 'Reports', icon: BarChart3 },
-    ],
-  },
-]
-
-// Placeholder user. Later this comes from the login.
-const user = { name: 'Rico Dizon', role: 'Administrator' }
+import { Link } from 'react-router-dom'
 
 function AdminLayout({ children }) {
   return (
-    <AppShell
-      portal="Admin Portal"
-      groups={groups}
-      user={user}
-      searchPlaceholder="Search users, invoices..."
-    >
-      {children}
-    </AppShell>
+    <div className="flex min-h-screen">
+      <div className="w-60 bg-blue-900 p-4 text-white">
+        <h2 className="text-xl font-bold">BLASTCARE</h2>
+        <Link to="/admin/dashboard" className="mt-4 block">Dashboard</Link>
+        <Link to="/admin/users" className="mt-2 block">Manage Users</Link>
+        <Link to="/admin/doctors" className="mt-2 block">Manage Doctors</Link>
+        <Link to="/admin/patients" className="mt-2 block">Manage Patients</Link>
+        <Link to="/admin/appointments" className="mt-2 block">Manage Appointments</Link>
+        <Link to="/admin/billing" className="mt-2 block">Billing</Link>
+      </div>
+
+      <div className="flex-1">
+        <div className="flex items-center justify-between border-b bg-white p-4">
+          <span>Admin Portal</span>
+          <Link to="/" className="text-blue-700">Logout</Link>
+        </div>
+        <div className="p-6">{children}</div>
+      </div>
+    </div>
   )
 }
 
